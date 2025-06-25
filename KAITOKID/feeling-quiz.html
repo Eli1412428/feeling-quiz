@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anong Feeling ng?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .question {
+            margin-bottom: 30px;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .option {
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .option:hover {
+            background-color: #e9ecef;
+        }
+        
+        .option.selected {
+            background-color: #4a6cf7;
+            color: white;
+            border-color: #4a6cf7;
+        }
+        
+        .option input[type="radio"] {
+            display: none;
+        }
+        
+        .submit-btn {
+            background-color: #4a6cf7;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            background-color: #3a5bd9;
+        }
+        
+        .submit-btn:disabled {
+            background-color: #adb5bd;
+            cursor: not-allowed;
+        }
+        
+        .video-container {
+            margin-top: 30px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        video {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .reset-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .reset-btn:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="question">
+            <h1>ANONG FEELING NG?</h1>
+        </div>
+        
+        <div class="options">
+            <label class="option">
+                <input type="radio" name="feeling" value="iniwan">
+                <span class="bullet">•</span>
+                <span class="option-text">INIWAN</span>
+            </label>
+            
+            <label class="option">
+                <input type="radio" name="feeling" value="nagmahal">
+                <span class="bullet">•</span>
+                <span class="option-text">NAGMAHAL</span>
+            </label>
+            
+            <label class="option">
+                <input type="radio" name="feeling" value="nasaktan">
+                <span class="bullet">•</span>
+                <span class="option-text">NASAKTAN</span>
+            </label>
+        </div>
+        
+        <button class="submit-btn" disabled>SUBMIT</button>
+        
+        <div class="video-container">
+            <video controls>
+                <source src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <button class="reset-btn">CHOOSE AGAIN</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const options = document.querySelectorAll('.option');
+            const submitBtn = document.querySelector('.submit-btn');
+            const videoContainer = document.querySelector('.video-container');
+            const videoElement = document.querySelector('video');
+            const resetBtn = document.querySelector('.reset-btn');
+            
+            let selectedOption = null;
+            
+            // Add click event listeners to options
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from all options
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Get the selected value
+                    selectedOption = this.querySelector('input').value;
+                    
+                    // Enable submit button
+                    submitBtn.disabled = false;
+                });
+            });
+            
+            // Submit button click handler
+            submitBtn.addEventListener('click', function() {
+                if (selectedOption) {
+                    // Hide question and options
+                    document.querySelector('.question').style.display = 'none';
+                    document.querySelector('.options').style.display = 'none';
+                    this.style.display = 'none';
+                    
+                    // Show video container
+                    videoContainer.style.display = 'flex';
+                    
+                    // Set video source based on selection
+                    // NOTE: You'll need to replace these with your actual video URLs
+                    let videoSrc = '';
+                    switch(selectedOption) {
+                        case 'iniwan':
+                            videoSrc = 'iniwan.mp4.mp4'; // Replace with your video path
+                            break;
+                        case 'nagmahal':
+                            videoSrc = 'nagmahal.mp4.mp4'; // Replace with your video path
+                            break;
+                        case 'nasaktan':
+                            videoSrc = 'nasaktan.mp4.mp4'; // Replace with your video path
+                            break;
+                    }
+                    
+                    videoElement.src = videoSrc;
+                    videoElement.load();
+                    videoElement.play();
+                }
+            });
+            
+            // Reset button click handler
+            resetBtn.addEventListener('click', function() {
+                // Show question and options
+                document.querySelector('.question').style.display = 'block';
+                document.querySelector('.options').style.display = 'flex';
+                submitBtn.style.display = 'block';
+                
+                // Hide video container
+                videoContainer.style.display = 'none';
+                
+                // Reset selection
+                options.forEach(opt => opt.classList.remove('selected'));
+                selectedOption = null;
+                submitBtn.disabled = true;
+                
+                // Pause and reset video
+                videoElement.pause();
+                videoElement.currentTime = 0;
+            });
+        });
+    </script>
+</body>
+</html>
